@@ -20,6 +20,7 @@
             v-for="item in menu.subMenu"
             :key="item.index"
             :index="item.index"
+            @click="handleSelect(item)"
             >{{ item.label }}</el-menu-item
           >
         </el-sub-menu>
@@ -41,7 +42,7 @@ export default {
   props: {
     isCollapse: Boolean,
   },
-  setup() {
+  setup(props, context) {
     const state = reactive({
       menuItem: [
         {
@@ -51,10 +52,10 @@ export default {
           subMenu: [
             {
               label: "국가별 요약",
-              index: "internationalCases",
+              index: "InternationalCases",
               path: "corona",
             },
-            { label: "국내 요약", index: "domesticCases", path: "corona" },
+            { label: "국내 요약", index: "DomesticCases", path: "corona" },
           ],
         },
         {
@@ -64,16 +65,18 @@ export default {
           subMenu: [
             {
               label: "샘플메뉴1",
-              index: "internationalCases",
+              index: "sample1",
               path: "corona",
             },
-            { label: "샘플메뉴2", index: "domesticCases", path: "corona" },
+            { label: "샘플메뉴2", index: "sample2", path: "corona" },
           ],
         },
       ],
     });
-
-    return { ...toRefs(state) };
+    const handleSelect = (item) => {
+      context.emit("menuSelect", item);
+    };
+    return { ...toRefs(state), handleSelect };
   },
 };
 </script>
